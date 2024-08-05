@@ -1,8 +1,8 @@
-import { Product } from "@prisma/client";
-import { CreateProductDTO } from "./dtos/create-product.dto";
+import { Prisma, Product } from "@prisma/client";
 
 interface ProductRepository {
-  create(data: CreateProductDTO): Promise<Product>;
+  create(data: Prisma.ProductCreateInput): Promise<Product>;
+  list(query: string): Promise<Product[]>;
 }
 
 export { ProductRepository };
