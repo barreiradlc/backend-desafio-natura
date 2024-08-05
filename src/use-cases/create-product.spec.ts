@@ -6,8 +6,7 @@ describe("Create Product", () => {
   it("Should be able to create product", async () => {
     const productDTO = {
       name: "Kayak 02 Masculino 100ml",
-      description: "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!",
-      cart: "cart-id"
+      description: "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!"
     }
 
     const inMemoryProductRepository = new InMemoryProductRepository()
@@ -16,5 +15,5 @@ describe("Create Product", () => {
     const productCreated = await sut.execute(productDTO)
 
     expect(productCreated.name).toEqual(productDTO.name)
-  })
+  })  
 })
