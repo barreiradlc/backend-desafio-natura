@@ -5,7 +5,24 @@ import { ProductRepository } from "../product-repository";
 class PrismaProductRepository implements ProductRepository {
   async list(query: string): Promise<Product[]> {
     console.log("TODO, implements query ", query)
-    const products = await prisma.product.findMany({  })
+    const products = await prisma.product.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              mode: 'insensitive',
+              contains: query
+            }
+          },
+          {
+            description: {
+              mode: 'insensitive',
+              contains: query
+            }
+          }
+        ]
+      }
+    })
 
     return products
   }

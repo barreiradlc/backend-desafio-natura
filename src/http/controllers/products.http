@@ -7,3 +7,9 @@ content-type: application/json
   "name": "Kayak 02 Masculino 100ml",
   "description": "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!"
 }
+
+### List Products
+# @name findProduct
+GET http://localhost:3333/products
+  ?query=rótulo  
+content-type: application/json

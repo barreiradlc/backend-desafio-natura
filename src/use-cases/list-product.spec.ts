@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, suite } from "vitest";
 import { InMemoryProductRepository } from "../repositories/product/in-memory/product-repository";
 import { CreateProduct } from "./create-product";
 import { ListProduct } from "./list-product";
@@ -46,4 +46,44 @@ describe("List Product", () => {
 
     expect(productsCreated.length).toEqual(savedProducts.length)
   })  
+
+  suite("Should query based on input provided", () => {
+    it("Should be able to list products by name", async () => {
+      const productDTO = {
+        name: "Kayak 02 Masculino 100ml",
+        description: "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!"
+      }
+      const inMemoryProductRepository = new InMemoryProductRepository()
+      const createProductUseCase = new CreateProduct(inMemoryProductRepository)
+      const sut = new ListProduct(inMemoryProductRepository)
+      
+      await createProductUseCase.execute(productDTO)
+      await createProductUseCase.execute({
+        name: "Floratta",
+        description: productDTO.description
+      })
+    
+      const searchedProducts = await sut.execute({ query: 'Floratta' })
+      expect(searchedProducts.length).toEqual(1)
+    })  
+    
+    it("Should be able to list products by description", async () => {
+      const productDTO = {
+        name: "Kayak 02 Masculino 100ml",
+        description: "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!"
+      }
+      const inMemoryProductRepository = new InMemoryProductRepository()
+      const createProductUseCase = new CreateProduct(inMemoryProductRepository)
+      const sut = new ListProduct(inMemoryProductRepository)
+      
+      await createProductUseCase.execute(productDTO)
+      await createProductUseCase.execute({
+        name: productDTO.name,
+        description: "Um excelente perfume para dias ensolarados.",
+      })
+    
+      const searchedProducts = await sut.execute({ query: 'ensolarados' })
+      expect(searchedProducts.length).toEqual(1)
+    })
+  })
 })

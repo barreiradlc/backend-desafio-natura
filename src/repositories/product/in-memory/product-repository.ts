@@ -17,8 +17,8 @@ class InMemoryProductRepository implements ProductRepository {
     return product
   }
 
-  async list(query: string): Promise<Product[]> {
-    const products = this.products.filter((product) => product.name.includes(query))
+  async list(query: string): Promise<Product[]> {    
+    const products = this.products.filter((product) => product.name.includes(query) || product.description.includes(query))
     
     return products
   }
