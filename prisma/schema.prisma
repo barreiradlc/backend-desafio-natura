@@ -19,5 +19,28 @@ model Product {
   name        String
   description String
 
+  cartItems   CartItem[]
+
   @@map("products")
+}
+
+model Cart {
+  id String @id @default(uuid())  
+
+  items       CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id          String @id @default(uuid())
+  quantity    Int  
+  
+  cart        Cart       @relation(fields: [cartId], references: [id])
+  product     Product    @relation(fields: [productId], references: [id])
+  
+  cartId      String
+  productId   String
+
+  @@map("cart-items")
 }

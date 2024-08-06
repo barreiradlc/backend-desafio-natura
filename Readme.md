@@ -45,6 +45,6 @@ Para interagir com ela é possível utilizar os próprios arquivos de http, por 
 
 ### End Points
 
- [ ] - Listagem de produtos - Obs : Ao menos 40 produtos cadastrados para retorno.
+ [x] - Listagem de produtos - Obs : Ao menos 40 produtos cadastrados para retorno.
+ [x] - Busca por produtos (nome/descrição).
  [ ] - Adição ao carrinho
- [ ] - Busca por produtos (nome/descrição).

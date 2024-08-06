@@ -1,5 +1,5 @@
 import { describe, expect, it, suite } from "vitest";
-import { InMemoryProductRepository } from "../repositories/product/in-memory/product-repository";
+import { InMemoryProductRepository } from "../../repositories/product/in-memory/product-repository";
 import { CreateProduct } from "./create-product";
 import { ListProduct } from "./list-product";
 

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { PrismaProductRepository } from "../../repositories/product/prisma/product-repository";
-import { ListProduct } from "../../use-cases/list-product";
+import { ListProduct } from "../../use-cases/products/list-product";
 
 async function listProduct(request: FastifyRequest, reply: FastifyReply) {
   const inMemoryProductRepository = new PrismaProductRepository()
