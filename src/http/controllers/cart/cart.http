@@ -1,0 +1,20 @@
+### ADD item to Cart with cartId no presente
+# @name addItemToCart
+POST http://localhost:3333/cart
+content-type: application/json
+
+{
+  "productId": "ce054353-fca4-4e63-b6a1-8a62d3bdeb6e",
+  "quantity": 2  
+}
+
+### ADD item to Cart with cartId presente
+# @name addItemToCartExistent
+POST http://localhost:3333/cart
+content-type: application/json
+
+{
+  "cartId": "{{ addItemToCart.response.body.$.id }}",
+  "productId": "2aa1d15b-b3b4-4db9-82a9-7decef024c2d",
+  "quantity": 2  
+}

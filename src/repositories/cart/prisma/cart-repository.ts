@@ -1,4 +1,3 @@
-import { Cart } from "@prisma/client";
 import { prisma } from "../../../lib/prisma";
 import { CartEntity, CartRepository } from "../cart-repository";
 import { AddToCartDTO } from "../dtos/add-to-cart-dto";
@@ -18,53 +17,66 @@ class PrismaCartRepository implements CartRepository {
     return cartSelected
   }
 
-  async addItem({ cartId, productId, quantity }: AddToCartDTO): Promise<Cart> {
-    const cartSelected = await prisma.cart.findUniqueOrThrow({
-      where: {
-        id: cartId
-      },
-      include: {
-        items: true
-      }
-    })
-
-    const cartItemWithproductAlreadyAdded = await prisma.cartItem.findFirst({ 
-      where: {
-        AND: [
-          {
-            cartId
-          },
-          {
-            productId
-          },
-        ]
-      }
-    })
-    
-    if (cartItemWithproductAlreadyAdded) {
-      cartItemWithproductAlreadyAdded.quantity += quantity    
-      
-      await prisma.cartItem.update({
+  async addItem({ cartId, productId, quantity }: AddToCartDTO): Promise<CartEntity> {
+    try {
+      const cartItemWithproductAlreadyAdded = await prisma.cartItem.findFirst({ 
         where: {
-          id: cartItemWithproductAlreadyAdded.id
-        },
-        data: { 
-          quantity: cartItemWithproductAlreadyAdded.quantity + quantity    
+          AND: [
+            {
+              cartId
+            },
+            {
+              productId
+            },
+          ]
         }
       })
-    } else {
-      await prisma.cartItem.create({
-        data: { 
-          cartId, productId, quantity
-         }
-      })      
-    }
+      
+      if (cartItemWithproductAlreadyAdded) {
+        const newQuantity = quantity + cartItemWithproductAlreadyAdded.quantity
+        
+        await prisma.cartItem.update({
+          where: {
+            id: cartItemWithproductAlreadyAdded.id
+          },
+          data: { 
+            quantity: newQuantity
+          }
+        })
+      } else {      
+        await prisma.cart.update({
+          where: {
+            id: cartId
+          },
+          data: {
+            items: {
+              create: {
+                quantity,
+                product: { connect: { id: productId } },
+              }
+            }
+          }
+        })
+      }
+      
+      const cart = await prisma.cart.findUniqueOrThrow({
+        where: {
+          id: cartId
+        },               
+        select: {
+          id: true,
+          items: true
+        }
+      })
 
-    return cartSelected
+      return cart
+    } catch (error) {
+      throw new Error(`Error adding products to the cart: ${error}`, )
+    }
   }  
   
   async create() {
-    const cart = await prisma.cart.create({})    
+    const cart = await prisma.cart.create({ data: {} })    
 
     return cart
   }
