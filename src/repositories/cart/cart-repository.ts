@@ -7,7 +7,7 @@ interface CartEntity extends Cart {
 
 interface CartRepository {
   create(): Promise<Cart>;
-  find(cartId: string): Promise<Cart>;
+  find(cartId: string): Promise<CartEntity>;
   addItem(data: Prisma.CartItemCreateInput | AddToCartDTO): Promise<Cart>;
 }
 
