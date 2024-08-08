@@ -1,10 +1,12 @@
 import { Prisma, Product } from "@prisma/client";
 import { prisma } from "../../../lib/prisma";
-import { ProductRepository } from "../product-repository";
+import { ListProductParams, ProductRepository } from "../product-repository";
 
 class PrismaProductRepository implements ProductRepository {
-  async list(query: string): Promise<Product[]> {    
-    const products = await prisma.product.findMany({
+  async list({ query = '', take = 20, skip = 0 }: ListProductParams): Promise<Product[]> {
+      const products = await prisma.product.findMany({
+      skip,
+      take,
       where: {
         OR: [
           {
@@ -20,10 +22,11 @@ class PrismaProductRepository implements ProductRepository {
             }
           }
         ]
-      }
+      }      
     })
     
     return products
+    
   }
 
   async create({ name, description }: Prisma.ProductCreateInput) {

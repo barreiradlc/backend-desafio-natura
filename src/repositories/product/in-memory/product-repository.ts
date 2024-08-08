@@ -1,6 +1,6 @@
 import { Prisma, Product } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { ProductRepository } from "../product-repository";
+import { ListProductParams, ProductRepository } from "../product-repository";
 
 class InMemoryProductRepository implements ProductRepository {  
   public products: Product[] = [];
@@ -17,9 +17,13 @@ class InMemoryProductRepository implements ProductRepository {
     return product
   }
 
-  async list(query: string): Promise<Product[]> {    
-    const products = this.products.filter((product) => product.name.includes(query) || product.description.includes(query))
-    
+  async list({ query = '', take }: ListProductParams): Promise<Product[]> {
+    const products = this.products
+      .filter((product) => {
+        return product.name.includes(query) || product.description.includes(query)
+      })
+      .slice(0, take || this.products.length + 1)
+
     return products
   }
   

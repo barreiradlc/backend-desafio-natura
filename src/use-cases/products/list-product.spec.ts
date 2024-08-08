@@ -40,7 +40,7 @@ describe("List Product", () => {
     for (let index = 0; index < 41; index++) {
       const productCreated = await createProductUseCase.execute(productDTO)            
       productsCreated.push(productCreated)
-    }      
+    }
     
     const savedProducts = await sut.execute({ query: '' })
 
@@ -85,5 +85,28 @@ describe("List Product", () => {
       const searchedProducts = await sut.execute({ query: 'ensolarados' })
       expect(searchedProducts.length).toEqual(1)
     })
+  })
+  
+  suite("Should limit based on input provided", () => {
+    it("Should be able to list only 4 products", async () => {
+      const productDTO = {
+        name: "Kayak 02 Masculino 100ml",
+        description: "Experimente a refrescância única de Kaiak Desodorante Colônia Masculino. Sinta-se revigorado e confiante!"
+      }
+      const inMemoryProductRepository = new InMemoryProductRepository()
+      const createProductUseCase = new CreateProduct(inMemoryProductRepository)
+      const sut = new ListProduct(inMemoryProductRepository)
+            
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for (const _ of new Array(6)) { 
+        await createProductUseCase.execute(productDTO)        
+      }
+    
+      const searchedProducts = await sut.execute({ take: '4' })
+
+      expect(searchedProducts.length).toEqual(4)
+    })  
+    
+    
   })
 })

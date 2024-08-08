@@ -1,9 +1,15 @@
 import { Prisma, Product } from "@prisma/client";
 
-interface ProductRepository {
-  create(data: Prisma.ProductCreateInput): Promise<Product>;
-  list(query?: string): Promise<Product[]>;
+type ListProductParams = {
+  query?: string
+  take?: number
+  skip?: number
 }
 
-export { ProductRepository };
+interface ProductRepository {
+  create(data: Prisma.ProductCreateInput): Promise<Product>;
+  list(params?: ListProductParams): Promise<Product[]>;
+}
+
+export { ListProductParams, ProductRepository };
 

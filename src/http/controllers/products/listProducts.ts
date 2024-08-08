@@ -8,15 +8,19 @@ async function listProduct(request: FastifyRequest, reply: FastifyReply) {
   const listProductUseCase = new ListProduct(inMemoryProductRepository)
 
   const productQueryParamSchema = z.object({
-    query: z.string().optional()    
+    query: z.string().optional(),
+    take: z.string().optional(),
+    skip: z.string().optional(),
   })
 
   const { query: queryParams } = request
 
-  const { query } = productQueryParamSchema.parse(queryParams)
+  const { query, take, skip } = productQueryParamSchema.parse(queryParams)
 
   const products = await listProductUseCase.execute({
-    query
+    query,
+    take,
+    skip,
   })
 
   return reply.code(200).send(products)

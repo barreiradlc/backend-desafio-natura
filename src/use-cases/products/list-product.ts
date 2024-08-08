@@ -3,6 +3,8 @@ import { ProductRepository } from "../../repositories/product/product-repository
 
 type ListProductRequest = {
   query?: string  
+  take?: string  
+  skip?: string  
 }
 
 type ListProductResponse = Product[]
@@ -13,9 +15,13 @@ class ListProduct {
   ) {}
 
   async execute(request: ListProductRequest): Promise<ListProductResponse> {
-    const { query } = request
+    const { query, take, skip } = request
     
-    const products = await this.productRepository.list(query)
+    const products = await this.productRepository.list({
+      query,
+      take: Number(take),
+      skip: Number(skip),
+    })
 
     return products
   }
