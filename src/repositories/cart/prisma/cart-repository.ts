@@ -3,7 +3,6 @@ import { CartEntity, CartRepository } from "../cart-repository";
 import { AddToCartDTO } from "../dtos/add-to-cart-dto";
 
 class PrismaCartRepository implements CartRepository {
-  
   async find(cartId: string): Promise<CartEntity> {
     const cartSelected = await prisma.cart.findUniqueOrThrow({
       where: {

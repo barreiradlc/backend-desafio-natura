@@ -3,8 +3,7 @@ import { prisma } from "../../../lib/prisma";
 import { ProductRepository } from "../product-repository";
 
 class PrismaProductRepository implements ProductRepository {
-  async list(query: string): Promise<Product[]> {
-    console.log("TODO, implements query ", query)
+  async list(query: string): Promise<Product[]> {    
     const products = await prisma.product.findMany({
       where: {
         OR: [
@@ -23,7 +22,7 @@ class PrismaProductRepository implements ProductRepository {
         ]
       }
     })
-
+    
     return products
   }
 

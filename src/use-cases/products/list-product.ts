@@ -2,7 +2,7 @@ import { Product } from "@prisma/client"
 import { ProductRepository } from "../../repositories/product/product-repository"
 
 type ListProductRequest = {
-  query: string  
+  query?: string  
 }
 
 type ListProductResponse = Product[]
