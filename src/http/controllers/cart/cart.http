@@ -4,7 +4,7 @@ POST http://localhost:3333/cart
 content-type: application/json
 
 {
-  "productId": "ce054353-fca4-4e63-b6a1-8a62d3bdeb6e",
+  "productId": "e5cf0f9c-3f3d-4d26-8b65-165cc1aa778a",
   "quantity": 2  
 }
 
@@ -15,6 +15,24 @@ content-type: application/json
 
 {
   "cartId": "{{ addItemToCart.response.body.$.id }}",
-  "productId": "2aa1d15b-b3b4-4db9-82a9-7decef024c2d",
-  "quantity": 2  
+  "productId": "e5cf0f9c-3f3d-4d26-8b65-165cc1aa778a"  
+}
+
+
+### Increment item to Cart
+# @name incrementItemToCartItem
+PATCH http://localhost:3333/cart/{{ addItemToCart.response.body.$.id }}/{{ addItemToCart.response.body.items[0].id }}
+content-type: application/json
+
+{
+  "action": "increment"
+}
+
+### Decrement item to Cart
+# @name decrementItemToCartItem
+PATCH http://localhost:3333/cart/{{ addItemToCart.response.body.$.id }}/{{ addItemToCart.response.body.items[0].id }}
+content-type: application/json
+
+{
+  "action": "decrement"
 }
