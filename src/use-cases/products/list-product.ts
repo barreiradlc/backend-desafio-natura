@@ -3,8 +3,8 @@ import { ProductRepository } from "../../repositories/product/product-repository
 
 type ListProductRequest = {
   query?: string  
-  take?: string  
-  skip?: string  
+  take?: number  
+  skip?: number  
 }
 
 type ListProductResponse = Product[]
@@ -19,8 +19,8 @@ class ListProduct {
     
     const products = await this.productRepository.list({
       query,
-      take: Number(take),
-      skip: Number(skip),
+      take,
+      skip  
     })
 
     return products

@@ -1,8 +1,12 @@
-import { Cart, CartItem, Prisma } from "@prisma/client";
+import { Cart, CartItem, Prisma, Product } from "@prisma/client";
 import { AddToCartDTO } from "./dtos/add-to-cart-dto";
 
+interface CartItemEntity extends CartItem { 
+  product: Product
+}
+
 interface CartEntity extends Cart {
-  items: CartItem[]
+  items: CartItemEntity[] 
 }
 
 interface CartRepository {

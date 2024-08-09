@@ -9,7 +9,15 @@ class PrismaCartRepository implements CartRepository {
         id: cartId
       },
       include: {
-        items: true
+        items: {
+          select: {
+            id: true,
+            cartId: true,
+            productId: true,
+            quantity: true,
+            product: true
+          }
+        }
       }
     })
     
@@ -64,7 +72,15 @@ class PrismaCartRepository implements CartRepository {
         },               
         select: {
           id: true,
-          items: true
+          items: {
+            select: {
+              id: true,
+              cartId: true,
+              productId: true,
+              quantity: true,
+              product: true
+            }
+          },          
         }
       })
 

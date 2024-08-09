@@ -19,8 +19,8 @@ async function listProduct(request: FastifyRequest, reply: FastifyReply) {
 
   const products = await listProductUseCase.execute({
     query,
-    take,
-    skip,
+    take: Number(take),
+    skip: Number(skip),
   })
 
   return reply.code(200).send(products)
