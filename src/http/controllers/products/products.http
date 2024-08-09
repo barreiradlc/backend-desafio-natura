@@ -12,5 +12,6 @@ content-type: application/json
 # @name findProduct
 GET http://localhost:3333/products
   ?query=
+  &skip=0
   &take=4
 content-type: application/json

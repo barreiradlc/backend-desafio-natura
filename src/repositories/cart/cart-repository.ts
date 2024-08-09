@@ -15,12 +15,18 @@ type ChangeQuantityCartItem = {
   action: 'increment' | 'decrement'
 }
 
+type DeleteItemFromCartParams = {
+  cartId: string
+  cartItemId: string
+}
+
 interface CartRepository {
   create(): Promise<Cart>;
   find(cartId: string): Promise<CartEntity>;
   addItem(data: Prisma.CartItemCreateInput | AddToCartDTO): Promise<Cart>;
+  removeItem(data: DeleteItemFromCartParams): Promise<void>;
   changeQuantityCartItem(data: ChangeQuantityCartItem): Promise<CartItemEntity>;
 }
 
-export { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem };
+export { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem, DeleteItemFromCartParams };
 

@@ -1,10 +1,19 @@
 import { randomUUID } from "crypto";
-import { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem } from "../cart-repository";
+import { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem, DeleteItemFromCartParams } from "../cart-repository";
 import { AddToCartDTO } from "../dtos/add-to-cart-dto";
 
 class InMemoryCartRepository implements CartRepository {
   public carts: CartEntity[] = [];
   
+  async removeItem({ cartId, cartItemId }: DeleteItemFromCartParams): Promise<void> {
+    const [cartSelected] = this.carts.filter((cart) => cart.id === cartId)
+    const cartItemsWithoutSelected = cartSelected.items.filter((cartItem) => cartItem.id !== cartItemId)
+
+    cartSelected.items = cartItemsWithoutSelected
+
+    return;
+  }
+
   async changeQuantityCartItem({ cartId, cartItemId, action}: ChangeQuantityCartItem ): Promise<CartItemEntity> {
     const [cartSelected] = this.carts.filter((cart) => cart.id === cartId)
     const [cartItemSelected] = cartSelected.items.filter((cartItem) => cartItem.id === cartItemId)
