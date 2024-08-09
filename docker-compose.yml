@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   natura_db:
     image: bitnami/postgresql

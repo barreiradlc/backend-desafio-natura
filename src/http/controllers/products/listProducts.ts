@@ -15,6 +15,8 @@ async function listProduct(request: FastifyRequest, reply: FastifyReply) {
 
   const { query: queryParams } = request
 
+  console.log(queryParams)
+
   const { query, take, skip } = productQueryParamSchema.parse(queryParams)
 
   const products = await listProductUseCase.execute({

@@ -4,13 +4,13 @@ import { PrismaCartRepository } from "../../../repositories/cart/prisma/cart-rep
 import { AddToCart } from "../../../use-cases/cart/add-to-cart-usecase";
 
 async function addItemToCart(request: FastifyRequest, reply: FastifyReply) {
-  const inMemoryCartRepository = new PrismaCartRepository()
-  const addToCartUseCase = new AddToCart(inMemoryCartRepository)
+  const prismaCartRepository = new PrismaCartRepository()
+  const addToCartUseCase = new AddToCart(prismaCartRepository)
 
   const cartItemBodySchema = z.object({
     cartId: z.string().optional(),
     productId: z.string(),
-    quantity: z.number()
+    quantity: z.number().optional().default(1)
   })
 
   const { body } = request

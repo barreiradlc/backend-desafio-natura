@@ -1,8 +1,17 @@
 import { prisma } from "../../../lib/prisma";
-import { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem } from "../cart-repository";
+import { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem, DeleteItemFromCartParams } from "../cart-repository";
 import { AddToCartDTO } from "../dtos/add-to-cart-dto";
 
 class PrismaCartRepository implements CartRepository {
+  async removeItem({ cartId, cartItemId }: DeleteItemFromCartParams): Promise<void> {
+    await prisma.cartItem.delete({
+      where: {
+        cartId,
+        id: cartItemId
+      }
+    })
+  }
+
   async changeQuantityCartItem({ cartId, cartItemId, action }: ChangeQuantityCartItem): Promise<CartItemEntity> {
     const { quantity } = await prisma.cartItem.findUniqueOrThrow({
       where: {
@@ -72,7 +81,8 @@ class PrismaCartRepository implements CartRepository {
         
         await prisma.cartItem.update({
           where: {
-            id: cartItemWithproductAlreadyAdded.id
+            id: cartItemWithproductAlreadyAdded.id,
+            cartId
           },
           data: { 
             quantity: newQuantity
@@ -114,7 +124,7 @@ class PrismaCartRepository implements CartRepository {
 
       return cart
     } catch (error) {
-      throw new Error(`Error adding products to the cart: ${error}`, )
+      throw new Error(`Error adding products to the cart: ${error}`)
     }
   }  
   

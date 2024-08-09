@@ -16,15 +16,17 @@ class AddToCart {
 
   async execute(request: AddToCartRequest): Promise<AddToCartResponse> {
     let { cartId } = request
-    const {  productId, quantity } = request
+    const { productId, quantity } = request
+
+    let cart
 
     if (!cartId) {
       const { id } = await this.cartRepository.create()
 
-      cartId = id
+      cart = await this.cartRepository.addItem({ cartId: id, productId, quantity })
+    } else {
+      cart = await this.cartRepository.addItem({ cartId, productId, quantity })
     }
-  
-    const cart = await this.cartRepository.addItem({ cartId, productId, quantity })
 
     return cart;
   }

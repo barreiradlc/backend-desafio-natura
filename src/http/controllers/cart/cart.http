@@ -36,3 +36,9 @@ content-type: application/json
 {
   "action": "decrement"
 }
+
+
+### Delete card item
+# @name deleteItemToCartItem
+DeLETE http://localhost:3333/cart/{{ addItemToCart.response.body.$.id }}/{{ addItemToCart.response.body.items[0].id }}
+content-type: application/json
