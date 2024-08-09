@@ -3,7 +3,6 @@ import { InMemoryCartRepository } from "../../repositories/cart/in-memory/cart-r
 import { AddToCart } from "./add-to-cart-usecase";
 
 describe("Add to Cart UseCase", () => {
-
   it("Should be able to add Item to an existing cart", async () => {
     const inMemoryCartRepository = new InMemoryCartRepository()
     const sut = new AddToCart(inMemoryCartRepository)

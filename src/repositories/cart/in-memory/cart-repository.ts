@@ -1,10 +1,19 @@
-import { Cart } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { CartEntity, CartRepository } from "../cart-repository";
+import { CartEntity, CartItemEntity, CartRepository, ChangeQuantityCartItem } from "../cart-repository";
 import { AddToCartDTO } from "../dtos/add-to-cart-dto";
 
 class InMemoryCartRepository implements CartRepository {
   public carts: CartEntity[] = [];
+  
+  async changeQuantityCartItem({ cartId, cartItemId, action}: ChangeQuantityCartItem ): Promise<CartItemEntity> {
+    const [cartSelected] = this.carts.filter((cart) => cart.id === cartId)
+    const [cartItemSelected] = cartSelected.items.filter((cartItem) => cartItem.id === cartItemId)
+
+    if (action === 'increment') { cartItemSelected.quantity++ }
+    if (action === 'decrement') { cartItemSelected.quantity-- }
+
+    return cartItemSelected
+  }
   
   async find(cartId: string): Promise<CartEntity> {
     const [cartSelected] = this.carts.filter((cart) => cart.id === cartId)
@@ -12,7 +21,7 @@ class InMemoryCartRepository implements CartRepository {
     return cartSelected
   }
 
-  async addItem({ cartId, productId, quantity }: AddToCartDTO): Promise<Cart> {
+  async addItem({ cartId, product, productId, quantity }: AddToCartDTO): Promise<CartEntity> {
     const [ cartSelected ] = this.carts.filter((cart) => cart.id === cartId)
 
     const [ productAlreadyAdded ] = cartSelected.items.filter(( cartItem ) => cartItem.productId === productId)
@@ -24,7 +33,8 @@ class InMemoryCartRepository implements CartRepository {
         id: randomUUID(),
         cartId,
         productId,
-        quantity
+        quantity,
+        product
       })
     }
 
