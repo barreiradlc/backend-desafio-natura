@@ -2,7 +2,7 @@ import { Cart, CartItem, Prisma, Product } from "@prisma/client";
 import { AddToCartDTO } from "./dtos/add-to-cart-dto";
 
 interface CartItemEntity extends CartItem { 
-  product: Product
+  product?: Product
 }
 
 interface CartEntity extends Cart {
