@@ -3,9 +3,17 @@ import { products } from "./products"
 
 async function seed() {
   for (const product of products) {
-    await prisma.product.create({
-      data: product
-    })
+    try {
+      await prisma.product.create({
+        data: {
+          ...product,
+          price: Math.floor(Math.random() * 10) * 10,
+          rating: Math.floor(Math.random() * 5)
+        }
+      })      
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 

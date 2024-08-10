@@ -29,8 +29,15 @@ class PrismaProductRepository implements ProductRepository {
     
   }
 
-  async create({ name, description }: Prisma.ProductCreateInput) {
-    const product = await prisma.product.create({ data: { name, description } })    
+  async create({ name, description, price = 50, rating = 0 }: Prisma.ProductCreateInput) {
+    const product = await prisma.product.create({
+      data: {
+        name,
+        description,
+        price,
+        rating
+      }
+    })    
 
     return product
   }

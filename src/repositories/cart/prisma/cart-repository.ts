@@ -93,7 +93,7 @@ class PrismaCartRepository implements CartRepository {
           where: {
             id: cartId
           },
-          data: {
+          data: { 
             items: {
               create: {
                 quantity,
